@@ -5,18 +5,17 @@ set -e
 bare=0
 
 if [ "$1" = "--bare" ]; then
-	bare=1
-	shift
+    bare=1
+    shift
 fi
 
 eval "$(rbenv init -)"
 
 for v in $(rbenv versions --bare); do
-	if [ "$bare" != "1" ]; then
-		echo "$v>> $*" 1>&2
-	fi
-	rbenv shell $v
-	$*
-	echo
+    if [ "$bare" != "1" ]; then
+        echo "$v>> $*" 1>&2
+    fi
+    rbenv shell $v
+    $*
+    echo
 done
-
