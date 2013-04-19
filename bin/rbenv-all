@@ -12,9 +12,7 @@ fi
 eval "$(rbenv init -)"
 
 for v in $(rbenv versions --bare); do
-    if [ "$bare" != "1" ]; then
-        echo "$v>> $*" 1>&2
-    fi
+    [ "$bare" != "1" ] && echo "$v>> $*" 1>&2
     rbenv shell $v
     $*
     echo
