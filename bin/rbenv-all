@@ -11,17 +11,6 @@ fi
 
 eval "$(rbenv init -)"
 
-original_version=$(rbenv shell 2>/dev/null)
-
-cleanup() {
-	if [ -n "$original_version" ]; then
-		rbenv shell $original_version
-	else
-		rbenv shell --unset
-	fi
-}
-trap cleanup 0
-
 for v in $(rbenv versions --bare); do
 	if [ "$bare" != "1" ]; then
 		echo "$v>> $*" 1>&2
