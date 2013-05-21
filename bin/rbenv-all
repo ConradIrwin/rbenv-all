@@ -1,18 +1,49 @@
 #!/usr/bin/env bash
 [ -n "$RBENV_DEBUG" ] && set -x
 
-bare=0
+display_help() {
+    echo "$(basename $0): Run a command with all rbenv ruby versions"
+    echo ""
+    echo "Usage: $(basename $0) [<options>] <command>"
+    echo ""
+    echo "Options:"
+    echo "  -b  --bare        Do not display ruby version before running command"
+    echo "  -f  --fail-fast   Exit immediately if a command has non-zero exit code"
+    echo "  -h  --help        Display this help"
+}
 
-if [ "$1" = "--bare" ]; then
-    bare=1
+bare=0
+failfast=0
+
+while [[ -n "$1" ]]; do
+    case "$1" in
+    '-b' | '--bare')
+        bare=1
+        ;;
+    '-f' | '--fail-fast')
+        failfast=1
+        ;;
+    '-h' | '--help')
+        display_help
+        exit
+        ;;
+    *)
+        break
+        ;;
+    esac
     shift
-fi
+done
 
 eval "$(rbenv init -)"
 
 for v in $(rbenv versions --bare); do
-    [ "$bare" != "1" ] && echo "$v>> $*" 1>&2
+    [ "$bare" != "1" ] && echo "$v>> $@" 1>&2
     rbenv shell $v
-    $*
+    $@
+    rv=$?
     echo
+
+    if [ "$rv" -ne 0 -a "$failfast" -eq 1 ]; then
+      exit $rv
+    fi
 done
