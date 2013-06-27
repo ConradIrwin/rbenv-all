@@ -2,16 +2,30 @@
 [ -n "$RBENV_DEBUG" ] && set -x
 
 bare=0
+force=0
 
-if [ "$1" = "--bare" ]; then
-    bare=1
-    shift
-fi
+while true
+do
+    case "$1" in
+      "--bare")
+          bare="1"
+          shift
+          ;;
+      "--force")
+          force="1"
+          shift
+          ;;
+      *)
+          break
+    esac
+done
+
+[ "$force" == "1" ] || set -e
 
 eval "$(rbenv init -)"
 
 for v in $(rbenv versions --bare); do
-    [ "$bare" != "1" ] && echo "$v>> $*" 1>&2
+    [ "$bare" == "1" ] || echo "$v>> $*" 1>&2
     rbenv shell $v
     $*
     echo

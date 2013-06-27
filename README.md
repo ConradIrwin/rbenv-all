@@ -38,6 +38,24 @@ ruby 1.8.7 (2012-10-12 patchlevel 371) [i686-darwin12.1.0]
 ruby 1.9.3p392 (2013-02-22 revision 39386) [x86_64-darwin12.1.0]
 ```
 
+By default rbenv all will stop on the first failure.
+
+```
+$ rbenv all ruby --vresion
+1.8.7-p371>> ruby --vresion
+ruby: invalid option --vresion  (-h will show valid options)
+```
+
+To suppress this, pass --force
+
+```
+$ rbenv all --force ruby --vresion
+1.8.7-p371>> ruby --vresion
+ruby: invalid option --vresion  (-h will show valid options)
+
+1.9.3-p392>> ruby --vresion
+ruby: invalid option --vresion  (-h will show valid options)
+```
 Credit
 ======
 
